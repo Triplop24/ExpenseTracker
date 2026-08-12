@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class ExpenseService {
     private List<Expense> expenses = new ArrayList<>();
@@ -39,12 +40,12 @@ public class ExpenseService {
         return expenses;
     }
 
-    public Expense getById(int id) {
+    public Optional<Expense> getById(int id) {
         for (Expense expense : expenses) {
             if (expense.getId() == id) {
-                return expense;
+                return Optional.of(expense);
             }
         }
-        return null;
+        return Optional.empty();
     }
 }

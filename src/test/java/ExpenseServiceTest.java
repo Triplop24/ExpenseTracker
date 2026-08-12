@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ExpenseServiceTest {
@@ -49,14 +51,14 @@ class ExpenseServiceTest {
     void getByIdExistingExpense(){
         expense = new Expense(2, 700, "FOOD", "Покушал в магазине");
         expenseServices.add(expense);
-        Expense foundExpense = expenseServices.getById(2);
-        assertEquals(expense, foundExpense);
-
+        Optional<Expense> expenseOptional = expenseServices.getById(2);
+        assertTrue(expenseOptional.isPresent());
+        assertEquals(expense, expenseOptional.get());
     }
 
     @Test
     void getByIdUnknownExpense() {
-        Expense foundExpense = expenseServices.getById(100);
-        assertNull(foundExpense);
+        Optional<Expense> expenseOptional = expenseServices.getById(1000);
+        assertTrue(expenseOptional.isEmpty());
     }
 }
