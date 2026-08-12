@@ -45,4 +45,18 @@ class ExpenseServiceTest {
         assertEquals(0, expenseServices.getByCategory("UNKNOWN").size());
     }
 
+    @Test
+    void getByIdExistingExpense(){
+        expense = new Expense(2, 700, "FOOD", "Покушал в магазине");
+        expenseServices.add(expense);
+        Expense foundExpense = expenseServices.getById(2);
+        assertEquals(expense, foundExpense);
+
+    }
+
+    @Test
+    void getByIdUnknownExpense() {
+        Expense foundExpense = expenseServices.getById(100);
+        assertNull(foundExpense);
+    }
 }

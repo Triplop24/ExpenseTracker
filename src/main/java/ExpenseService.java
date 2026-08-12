@@ -39,4 +39,12 @@ public class ExpenseService {
         return expenses;
     }
 
+    public Expense getById(int id) {
+        for (Expense expense : expenses) {
+            if (expense.getId() == id) {
+                return expense;
+            }
+        }
+        return null;
+    }
 }
