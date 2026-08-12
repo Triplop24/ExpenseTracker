@@ -33,4 +33,16 @@ class ExpenseServiceTest {
         assertEquals(1, expenseServices.getExpenses().get(0).getId());
         assertEquals(1, expenseServices.getExpenses().size());
     }
+
+    @Test
+    void getByCategory(){
+        expense = new Expense(2, 700, "FOOD", "Покушал в магазине");
+        expenseServices.add(expense);
+        expense = new Expense(3, 900, "TRANSPORT", "Проездной на месяц");
+        expenseServices.add(expense);
+        assertEquals(2, expenseServices.getByCategory("FOOD").size());
+        assertEquals(1, expenseServices.getByCategory("TRANSPORT").size());
+        assertEquals(0, expenseServices.getByCategory("UNKNOWN").size());
+    }
+
 }

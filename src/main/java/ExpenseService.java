@@ -17,6 +17,16 @@ public class ExpenseService {
         }
     }
 
+    public List<Expense> getByCategory(String category){
+        List<Expense> filteredExpenses = new ArrayList<>();
+        for (Expense expense : expenses) {
+            if (expense.getCategory().equals(category)) {
+                filteredExpenses.add(expense);
+            }
+        }
+        return filteredExpenses ;
+    }
+
     public double getTotalAmount(){
         double amount = 0;
         for (Expense expense : expenses) {
