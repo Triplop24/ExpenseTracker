@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 
 import java.util.Optional;
 
@@ -71,5 +72,15 @@ class ExpenseServiceTest {
         assertEquals(1100, expenseServices.getTotalAmountByCategory("FOOD"));
         assertEquals(900, expenseServices.getTotalAmountByCategory("TRANSPORT"));
         assertEquals(0, expenseServices.getTotalAmountByCategory("UNKNOWN"));
+    }
+
+    @Test
+    void illegalArgumentsExpenseConstructor(){
+        assertThrows(IllegalArgumentException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                Expense expense1 = new Expense(-1, -100, "FFF", "FFF");
+            }
+        });
     }
 }

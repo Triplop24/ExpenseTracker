@@ -49,10 +49,10 @@ public class ExpenseService {
         return Optional.empty();
     }
 
-    public double getTotalAmountByCategory(String category){
+    public double getTotalAmountByCategory(String category) {
         List<Expense> filteredExpenses = getByCategory(category);
         double amount = 0;
-        for (Expense expense : filteredExpenses){
+        for (Expense expense : filteredExpenses) {
             amount += expense.getAmount();
         }
         return amount;

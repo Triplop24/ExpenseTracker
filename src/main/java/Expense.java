@@ -5,6 +5,9 @@ public class Expense {
     private String description;
 
     public Expense(int id, double amount, String category, String description) {
+        if (id < 0 || amount <= 0){
+            throw new IllegalArgumentException("Введено неверное значение");
+        }
         this.id = id;
         this.amount = amount;
         this.description = description;
