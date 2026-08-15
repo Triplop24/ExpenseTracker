@@ -29,4 +29,21 @@ public class Expense {
     public String getDescription() {
         return description;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Expense)) {
+            return false;
+        }
+        Expense expense = (Expense) o;
+        return id == expense.id;
+    }
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(id);
+    }
 }

@@ -83,4 +83,14 @@ class ExpenseServiceTest {
             }
         });
     }
+
+    @Test
+    void addDuplicateId(){
+        assertThrows(IllegalArgumentException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                expenseServices.add(new Expense(1, 10000, "TRANSPORT", "Test Description"));
+            }
+        });
+    }
 }

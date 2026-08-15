@@ -6,6 +6,11 @@ public class ExpenseService {
     private List<Expense> expenses = new ArrayList<>();
 
     public void add(Expense expense) {
+        for (Expense expense1 : expenses){
+            if (expense.equals(expense1)){
+                throw new IllegalArgumentException("Такой id уже существует, пожалуйста, проверьте корректность вводимых данных");
+            }
+        }
         expenses.add(expense);
     }
 
