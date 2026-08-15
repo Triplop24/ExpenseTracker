@@ -93,4 +93,30 @@ class ExpenseServiceTest {
             }
         });
     }
+
+    @Test
+    void updateByExistingId(){
+        expenseServices.update(new Expense(1, 1000, "FOOD", "Покушал в рестике"));
+        assertEquals(1000, expenseServices.getById(1).get().getAmount());
+    }
+
+    @Test
+    void updateByNotExistingId(){
+        assertThrows(IllegalArgumentException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                expenseServices.update(new Expense(3, 1000, "FOOD", "Покушал в рестике"));
+            }
+        });
+    }
+
+    @Test
+    void updateArgumentNull(){
+        assertThrows(IllegalArgumentException.class, new Executable() {
+            @Override
+            public void execute() throws Throwable {
+                expenseServices.update(null);
+            }
+        });
+    }
 }

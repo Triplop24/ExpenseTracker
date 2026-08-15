@@ -62,4 +62,18 @@ public class ExpenseService {
         }
         return amount;
     }
+
+    public void update(Expense expense) {
+        if (expense == null){
+            throw new IllegalArgumentException();
+        }
+        Optional<Expense> foundExpenseOpt = getById(expense.getId());
+        if (foundExpenseOpt.isPresent()){
+            Expense foundExpense = foundExpenseOpt.get();
+            remove(foundExpense.getId());
+            add(expense);
+            return;
+        }
+        throw new IllegalArgumentException();
+    }
 }
