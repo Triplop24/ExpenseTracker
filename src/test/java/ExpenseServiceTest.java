@@ -61,4 +61,15 @@ class ExpenseServiceTest {
         Optional<Expense> expenseOptional = expenseServices.getById(1000);
         assertTrue(expenseOptional.isEmpty());
     }
+
+    @Test
+    void getTotalAmountByCategory(){
+        expense = new Expense(2, 700, "FOOD", "Покушал в магазине");
+        expenseServices.add(expense);
+        expense = new Expense(3, 900, "TRANSPORT", "Проездной на месяц");
+        expenseServices.add(expense);
+        assertEquals(1100, expenseServices.getTotalAmountByCategory("FOOD"));
+        assertEquals(900, expenseServices.getTotalAmountByCategory("TRANSPORT"));
+        assertEquals(0, expenseServices.getTotalAmountByCategory("UNKNOWN"));
+    }
 }
