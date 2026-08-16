@@ -76,4 +76,17 @@ public class ExpenseService {
         }
         throw new IllegalArgumentException();
     }
+
+    public List<Expense> getByAmountRange(double minAmount, double maxAmount){
+        if (minAmount>maxAmount){
+            throw new IllegalArgumentException();
+        }
+        List<Expense> filteredExpenses = new ArrayList<>();
+        for (Expense expense : expenses){
+            if (expense.getAmount() >= minAmount && expense.getAmount() <= maxAmount){
+                filteredExpenses.add(expense);
+            }
+        }
+        return filteredExpenses;
+    }
 }
