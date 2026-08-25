@@ -1,64 +1,54 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.math.BigDecimal;
+import java.util.*;
 
 public class ExpenseService {
-    private List<Expense> expenses = new ArrayList<>();
+    private Map<Integer, Expense> expenses = new HashMap<>();
 
     public void add(Expense expense) {
-        for (Expense expense1 : expenses){
-            if (expense.equals(expense1)){
-                throw new IllegalArgumentException("Такой id уже существует, пожалуйста, проверьте корректность вводимых данных");
-            }
+        if (expense == null){
+            throw new IllegalArgumentException();
         }
-        expenses.add(expense);
+        if (expenses.containsKey(expense.getId())){
+            throw new IllegalArgumentException();
+        }
+        expenses.put(expense.getId(), expense);
     }
 
     public void remove(int id) {
-        for (int i = 0; i < expenses.size(); i++) {
-            if (expenses.get(i).getId() == id) {
-                expenses.remove(i);
-                break;
-            }
-        }
+        expenses.remove(id);
     }
 
     public List<Expense> getByCategory(String category){
         List<Expense> filteredExpenses = new ArrayList<>();
-        for (Expense expense : expenses) {
+        for (Expense expense : expenses.values()) {
             if (expense.getCategory().equals(category)) {
                 filteredExpenses.add(expense);
             }
         }
-        return filteredExpenses ;
+        return filteredExpenses;
     }
 
-    public double getTotalAmount(){
-        double amount = 0;
-        for (Expense expense : expenses) {
-            amount+=expense.getAmount();
+    public BigDecimal getTotalAmount(){
+        BigDecimal amount = BigDecimal.ZERO;
+        for (Expense expense : expenses.values()){
+            amount = amount.add(expense.getAmount());
         }
         return amount;
     }
 
-    public List<Expense> getExpenses() {
-        return expenses;
+    public Map<Integer, Expense> getExpenses() {
+        return Map.copyOf(expenses);
     }
 
     public Optional<Expense> getById(int id) {
-        for (Expense expense : expenses) {
-            if (expense.getId() == id) {
-                return Optional.of(expense);
-            }
-        }
-        return Optional.empty();
+        return Optional.ofNullable(expenses.get(id));
     }
 
-    public double getTotalAmountByCategory(String category) {
+    public BigDecimal getTotalAmountByCategory(String category) {
         List<Expense> filteredExpenses = getByCategory(category);
-        double amount = 0;
+        BigDecimal amount = BigDecimal.ZERO;
         for (Expense expense : filteredExpenses) {
-            amount += expense.getAmount();
+            amount = amount.add(expense.getAmount());
         }
         return amount;
     }
@@ -67,23 +57,21 @@ public class ExpenseService {
         if (expense == null){
             throw new IllegalArgumentException();
         }
-        Optional<Expense> foundExpenseOpt = getById(expense.getId());
-        if (foundExpenseOpt.isPresent()){
-            Expense foundExpense = foundExpenseOpt.get();
-            remove(foundExpense.getId());
-            add(expense);
+
+        if (getById(expense.getId()).isPresent()){
+            expenses.put(expense.getId(), expense);
             return;
         }
         throw new IllegalArgumentException();
     }
 
-    public List<Expense> getByAmountRange(double minAmount, double maxAmount){
-        if (minAmount>maxAmount){
+    public List<Expense> getByAmountRange(BigDecimal minAmount, BigDecimal maxAmount){
+        if (minAmount.compareTo(maxAmount) > 0){
             throw new IllegalArgumentException();
         }
         List<Expense> filteredExpenses = new ArrayList<>();
-        for (Expense expense : expenses){
-            if (expense.getAmount() >= minAmount && expense.getAmount() <= maxAmount){
+        for (Expense expense : expenses.values()){
+            if (expense.getAmount().compareTo(minAmount) >= 0 && expense.getAmount().compareTo(maxAmount) <= 0){
                 filteredExpenses.add(expense);
             }
         }

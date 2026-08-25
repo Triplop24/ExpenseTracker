@@ -1,11 +1,13 @@
+import java.math.BigDecimal;
+
 public class Expense {
     private int id;
-    private double amount;
+    private BigDecimal amount;
     private String category;
     private String description;
 
-    public Expense(int id, double amount, String category, String description) {
-        if (id < 0 || amount <= 0){
+    public Expense(int id, BigDecimal amount, String category, String description) {
+        if ((id <= 0) || (amount == null) || (amount.compareTo(BigDecimal.ZERO) <= 0)){
             throw new IllegalArgumentException("Введено неверное значение");
         }
         this.id = id;
@@ -22,7 +24,7 @@ public class Expense {
         return category;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
