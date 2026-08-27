@@ -1,3 +1,5 @@
+package org.expenseTracker;
+
 import java.math.BigDecimal;
 
 public class Expense {
@@ -11,6 +13,12 @@ public class Expense {
             throw new IllegalArgumentException("Введено неверное значение");
         }
         this.id = id;
+        this.amount = amount;
+        this.description = description;
+        this.category = category;
+    }
+
+    public Expense(BigDecimal amount, String category, String description){
         this.amount = amount;
         this.description = description;
         this.category = category;

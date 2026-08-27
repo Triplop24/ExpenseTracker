@@ -1,5 +1,7 @@
 plugins {
     id("java")
+    id("org.springframework.boot") version "3.5.5"
+    id("io.spring.dependency-management") version "1.1.7"
 }
 
 group = "org.example"
@@ -11,8 +13,16 @@ repositories {
 
 dependencies {
     testImplementation(platform("org.junit:junit-bom:6.0.0"))
+    implementation("org.postgresql:postgresql:42.7.7")
+    implementation("org.springframework.boot:spring-boot-starter-web")
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 tasks.test {
