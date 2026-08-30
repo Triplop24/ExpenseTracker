@@ -1,12 +1,23 @@
 package org.expenseTracker;
 
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = "expenses")
 public class Expense {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private BigDecimal amount;
+
+    @Enumerated(EnumType.STRING)
     private ExpenseCategory category;
     private String description;
+
+    public Expense() {}
 
     public Expense(int id, BigDecimal amount, ExpenseCategory category, String description) {
         if ((id <= 0) || (amount == null) || (amount.compareTo(BigDecimal.ZERO) <= 0)){
@@ -43,6 +54,18 @@ public class Expense {
 
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public void setCategory(ExpenseCategory category) {
+        this.category = category;
     }
 
     @Override

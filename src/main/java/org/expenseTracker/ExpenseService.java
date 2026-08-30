@@ -1,7 +1,6 @@
 package org.expenseTracker;
 
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -13,25 +12,25 @@ public class ExpenseService {
         this.expenseRepository = expenseRepository;
     }
 
-    public int add(Expense expense) {
+    public void add(Expense expense) {
         if (expense == null){
             throw new IllegalArgumentException();
         }
 
-        return expenseRepository.addExpense(expense);
+        expenseRepository.save(expense);
     }
 
-    public void remove(int id) {
-        expenseRepository.removeExpense(id);
+    public void deleteById(int id) {
+        expenseRepository.deleteById(id);
     }
 
     public List<Expense> getByCategory(String category){
-        return expenseRepository.getByCategory(category);
+        return expenseRepository.findByCategory(ExpenseCategory.valueOf(category));
     }
 
     public BigDecimal getTotalAmount(){
         BigDecimal amount = BigDecimal.ZERO;
-        List<Expense> expensesList = expenseRepository.getAllExpenses();
+        List<Expense> expensesList = getExpenses();
 
         for (Expense expense : expensesList){
             amount = amount.add(expense.getAmount());
@@ -40,7 +39,7 @@ public class ExpenseService {
     }
 
     public List<Expense> getExpenses() {
-        return expenseRepository.getAllExpenses();
+        return expenseRepository.findAll();
     }
 
     public BigDecimal getTotalAmountByCategory(String category) {
@@ -52,22 +51,33 @@ public class ExpenseService {
         return amount;
     }
 
-    public Expense getById(int id){
-        return expenseRepository.getById(id);
-    }
+    public Expense getById(int id) {
+        Optional<Expense> expense = expenseRepository.findById(id);
 
-    public int update(Expense expense) {
-        if (expense == null){
-            throw new IllegalArgumentException();
+        if (expense.isEmpty()) {
+            return null;
         }
 
-        return expenseRepository.updateExpense(expense);
+        return expense.get();
+    }
+
+    public Expense update(int id, Expense expense) {
+        if (expenseRepository.findById(id).isEmpty()){
+            throw new IllegalArgumentException();
+        }
+        Expense existing = expenseRepository.findById(id).get();
+
+        existing.setAmount(expense.getAmount());
+        existing.setCategory(expense.getCategory());
+        existing.setDescription(expense.getDescription());
+
+        return expenseRepository.save(existing);
     }
 
     public List<Expense> getByAmountRange(BigDecimal minAmount, BigDecimal maxAmount){
         if (minAmount.compareTo(maxAmount) > 0){
             throw new IllegalArgumentException();
         }
-        return expenseRepository.getByAmountRange(minAmount, maxAmount);
+        return expenseRepository.findByAmountBetween(minAmount, maxAmount);
     }
 }

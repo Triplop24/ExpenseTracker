@@ -31,15 +31,14 @@ public class ExpenseController {
         expenseService.add(expense);
     }
 
-    @PutMapping
-    public String updateExpense(@RequestBody Expense expense){
-        int number = expenseService.update(expense);
-        return "Updated " + number + " expenses";
+    @PutMapping("/{id}")
+    public Expense updateExpense(@RequestBody Expense expense, @PathVariable int id){
+        return expenseService.update(id, expense);
     }
 
     @DeleteMapping("/{id}")
     public void removeExpense(@PathVariable int id){
-        expenseService.remove(id);
+        expenseService.deleteById(id);
     }
 
     @GetMapping("/total-expenses")
