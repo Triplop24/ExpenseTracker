@@ -25,7 +25,7 @@ public class ExpenseRepository {
                 String category = resultSet.getString(3);
                 String description = resultSet.getString(4);
 
-                Expense expense = new Expense(id, amount, category, description);
+                Expense expense = new Expense(id, amount, ExpenseCategory.valueOf(category), description);
                 expenseList.add(expense);
             }
         } catch (SQLException e) {
@@ -43,7 +43,7 @@ public class ExpenseRepository {
         ) {
             BigDecimal amount = expense.getAmount();
             String description = expense.getDescription();
-            String category = expense.getCategory();
+            String category = expense.getCategory().name();
             preparedStatement.setBigDecimal(1, amount);
             preparedStatement.setString(2, category);
             preparedStatement.setString(3, description);
@@ -66,7 +66,7 @@ public class ExpenseRepository {
              PreparedStatement preparedStatement = connection.prepareStatement("UPDATE expenses SET amount = ?, category = ?, description = ? WHERE id = ?;");
         ) {
             preparedStatement.setBigDecimal(1, expense.getAmount());
-            preparedStatement.setString(2, expense.getCategory());
+            preparedStatement.setString(2, expense.getCategory().name());
             preparedStatement.setString(3, expense.getDescription());
             preparedStatement.setInt(4, expense.getId());
             result = preparedStatement.executeUpdate();
@@ -100,7 +100,7 @@ public class ExpenseRepository {
                 BigDecimal amount = resultSet.getBigDecimal(2);
                 String category = resultSet.getString(3);
                 String description = resultSet.getString(4);
-                expenses.add(new Expense(id, amount, category, description));
+                expenses.add(new Expense(id, amount, ExpenseCategory.valueOf(category), description));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -121,7 +121,7 @@ public class ExpenseRepository {
                 BigDecimal amount = resultSet.getBigDecimal(2);
                 String category = resultSet.getString(3);
                 String description = resultSet.getString(4);
-                filteredExpenses.add(new Expense(id, amount, category, description));
+                filteredExpenses.add(new Expense(id, amount, ExpenseCategory.valueOf(category), description));
             }
         } catch (SQLException e){
             throw new RuntimeException(e);
@@ -142,7 +142,7 @@ public class ExpenseRepository {
                 BigDecimal amount = resultSet.getBigDecimal(2);
                 String category = resultSet.getString(3);
                 String description = resultSet.getString(4);
-                expense = new Expense(id,amount, category, description);
+                expense = new Expense(id, amount, ExpenseCategory.valueOf(category), description);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
