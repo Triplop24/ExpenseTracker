@@ -4,8 +4,6 @@
 
 Учебный backend-проект для практики разработки приложений на **Java** и **Spring Boot** с использованием **PostgreSQL**.
 
-
-
 ## Стек технологий
 
 * **Java 21**
@@ -14,10 +12,10 @@
 * **Spring Data JPA**
 * **Hibernate**
 * **PostgreSQL**
+* **Docker**
+* **Docker Compose**
 * **Gradle**
 * **JUnit 5**
-
-
 
 ## Возможности
 
@@ -32,33 +30,33 @@
 * Валидация данных расхода
 * Проверка на дублирование ID
 
-
-
 ## Требования
 
 Перед запуском убедитесь, что установлены:
 
 * **Java 21+**
-* **PostgreSQL**
+* **Docker Desktop**
 * **Gradle**
-
-
 
 ## Настройка базы данных
 
-Приложение использует **PostgreSQL**.
+Приложение использует **PostgreSQL**, который запускается в Docker-контейнере с помощью **Docker Compose**.
 
-Создайте базу данных:
+Перед запуском приложения необходимо создать файл `.env` в корне проекта:
 
-```sql
-CREATE DATABASE expense_tracker;
+```text
+DB_PASSWORD=your_password
 ```
 
-Настройки подключения находятся в `application.properties`.
+Запустите PostgreSQL:
 
-Пароль базы данных **не хранится непосредственно в проекте**. Он передаётся через переменную окружения `DB_PASSWORD`.
+```bash
+docker compose up -d
+```
 
-Пример конфигурации:
+Docker автоматически создаст и запустит контейнер PostgreSQL и базу данных `expense_tracker`.
+
+Настройки подключения находятся в `application.properties`:
 
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/expense_tracker
@@ -66,12 +64,6 @@ spring.datasource.username=postgres
 spring.datasource.password=${DB_PASSWORD}
 ```
 
-Перед запуском приложения необходимо установить переменную окружения:
-
-```text
-DB_PASSWORD=your_password
-```
-Для работы с API используйте соответствующие endpoints, описанные в разделе
 
 ## Тестирование
 
@@ -90,8 +82,7 @@ DB_PASSWORD=your_password
 * валидация данных;
 * подсчёт сумм по категориям.
 
-**Примечание:** для запуска тестов требуется доступная PostgreSQL и настроенная переменная окружения `DB_PASSWORD`.
-
+**Примечание:** перед запуском тестов убедитесь, что PostgreSQL запущен через Docker Compose и настроена переменная `DB_PASSWORD`.
 
 ## API
 
@@ -135,9 +126,7 @@ GET /expenses/total-expenses?category=FOOD
 
 ```http
 GET /expenses/total-expenses?minAmount=800&maxAmount=1200
-`````
-
-
+```
 
 ## Цель проекта
 
@@ -147,4 +136,5 @@ GET /expenses/total-expenses?minAmount=800&maxAmount=1200
 * работы с **Spring Boot**;
 * работы с **Spring Data JPA и Hibernate**;
 * взаимодействия с **PostgreSQL**;
+* работы с **Docker и Docker Compose**;
 * работы с Git и GitHub.
